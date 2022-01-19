@@ -19,7 +19,7 @@ router.get(
     async(req, res, next) => {
   try {
     const account = await Account.getById(req.params.id)
-    res.json(account)
+    res.json(req.account)
   } catch (err) {
     next(err)
   }
