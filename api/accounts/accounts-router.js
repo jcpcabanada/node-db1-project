@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const accountsMidware = require('./accounts-middleware')
 
 router.get('/', (req, res, next) => {
   // DO YOUR MAGIC
@@ -10,8 +11,10 @@ router.get('/', (req, res, next) => {
   }
 })
 
-router.get('/:id', (req, res, next) => {
-  // DO YOUR MAGIC
+router.get(
+    '/:id',
+    accountsMidware.checkAccountId,
+    (req, res, next) => {
   try {
     res.json('get accounts')
   } catch (err) {
@@ -19,8 +22,11 @@ router.get('/:id', (req, res, next) => {
   }
 })
 
-router.post('/', (req, res, next) => {
-  // DO YOUR MAGIC
+router.post(
+    '/',
+    accountsMidware.checkAccountPayload,
+    accountsMidware.checkAccountNameUnique,
+    (req, res, next) => {
   try {
     res.json('post accounts')
   } catch (err) {
@@ -28,8 +34,12 @@ router.post('/', (req, res, next) => {
   }
 })
 
-router.put('/:id', (req, res, next) => {
-  // DO YOUR MAGIC
+router.put(
+    '/:id',
+    accountsMidware.checkAccountPayload,
+    accountsMidware.checkAccountNameUnique,
+    accountsMidware.checkAccountId,
+    (req, res, next) => {
   try {
     res.json('put accounts')
   } catch (err) {
@@ -37,8 +47,7 @@ router.put('/:id', (req, res, next) => {
   }
 });
 
-router.delete('/:id', (req, res, next) => {
-  // DO YOUR MAGIC
+router.delete('/:id', accountsMidware.checkAccountId, (req, res, next) => {
   try {
     res.json('delete accounts')
   } catch (err) {
